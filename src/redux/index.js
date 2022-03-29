@@ -54,7 +54,7 @@ const INITIAL_STATE = {
 		{
 			name: 'normal',
 			backgr: '#e6e6fa',
-			color: '#dcdcdc',
+			color: '#a1a1a1',
 		},
 		{
 			name: 'grass',

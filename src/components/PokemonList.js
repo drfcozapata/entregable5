@@ -16,13 +16,19 @@ const PokemonList = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		axios.get('https://pokeapi.co/api/v2/pokemon').then(res => {
-			setPokemons(res.data.results);
-			console.log(res.data.results);
-		});
-		axios
-			.get('https://pokeapi.co/api/v2/type')
-			.then(res => setPokemonTypes(res.data.results));
+		async function fetchData() {
+			const request = await axios.get(
+				'https://pokeapi.co/api/v2/pokemon?limit=152'
+			);
+			setPokemons(request.data.results);
+		}
+		fetchData();
+
+		async function fetchDataTypes() {
+			const request = await axios.get('https://pokeapi.co/api/v2/type');
+			setPokemonTypes(request.data.results);
+		}
+		fetchDataTypes();
 	}, []);
 
 	const handleSubmit = e => {
@@ -49,31 +55,33 @@ const PokemonList = () => {
 					Bienvenido <br />
 					{userName}
 				</h2>
-				<form
-					className="form-group d-flex justify-content-center mb-4"
-					onSubmit={handleSubmit}
-				>
-					<input
-						className="form-control w-45"
-						type="text"
-						value={pokemonName}
-						placeholder="Escribe el nombre del Pokemon que deseas buscar"
-						onChange={e => setPokemonName(e.target.value)}
-					/>
-					<button className="btn btn-outline-primary">Buscar</button>
-				</form>
 
-				{/* Select by Type */}
-				<div className="select">
-					<label className="text-white mt-2">Buscar un tipo de Pokemon</label>
-					<select className="form-control w-50" onChange={handleType}>
-						<option value="">Selecciona un tipo de Pokemon</option>
-						{pokemonTypes.map(pokemonType => (
-							<option key={pokemonType.name} value={pokemonType.url}>
-								{pokemonType.name.replace(/^\w/, c => c.toUpperCase())}
-							</option>
-						))}
-					</select>
+				<div className="search">
+					{/* Search by name */}
+					<form
+						className="form-group d-flex justify-content-center mb-4"
+						onSubmit={handleSubmit}
+					>
+						<input
+							className="form-control"
+							type="text"
+							value={pokemonName}
+							placeholder="Escribe el nombre del Pokemon que deseas buscar"
+							onChange={e => setPokemonName(e.target.value)}
+						/>
+						<button className="btn btn-danger">Buscar</button>
+					</form>
+					{/* Select by Type */}
+					<div className="select">
+						<select className="form-control" onChange={handleType}>
+							<option value="">Selecciona un tipo de Pokemon</option>
+							{pokemonTypes.map(pokemonType => (
+								<option key={pokemonType.name} value={pokemonType.url}>
+									{pokemonType.name.replace(/^\w/, c => c.toUpperCase())}
+								</option>
+							))}
+						</select>
+					</div>
 				</div>
 
 				<div className="pokemon-cards">

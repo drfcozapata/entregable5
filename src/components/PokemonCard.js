@@ -31,7 +31,7 @@ const PokemonCard = ({ pokemonUrl }) => {
 			to={`/pokedex/${pokemon.id}`}
 			style={{ textDecoration: 'none', color: `${textColor}` }}
 		>
-			<div className="card">
+			<div className="card shadow">
 				<div
 					className="card-header"
 					style={{ backgroundColor: `${bckgColor}` }}
