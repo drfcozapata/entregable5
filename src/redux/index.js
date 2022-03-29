@@ -44,7 +44,7 @@ const INITIAL_STATE = {
 		{
 			name: 'ice',
 			backgr: '#7fffd4',
-			color: '#afeeee',
+			color: '#6dd4d4',
 		},
 		{
 			name: 'fighting',
@@ -69,7 +69,7 @@ const INITIAL_STATE = {
 		{
 			name: 'rock',
 			backgr: '#cd853f',
-			color: '#d2691e',
+			color: '#aa5518',
 		},
 		{
 			name: 'dark',
