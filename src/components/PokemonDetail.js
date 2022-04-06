@@ -1,20 +1,22 @@
-import axios from 'axios';
 import React, { Fragment, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import { pokemonApi } from '../api/pokemonApi';
+import { useSelector } from 'react-redux';
+import usePokemon from '../hooks/usePokemon';
 import pokeball from '../img/open-pokeball.png';
 import clip from '../img/clip.png';
 import Footer from './Footer';
 import Header from './Header';
+import { Loading } from './Loading';
 
 const PokemonDetail = () => {
 	const { id } = useParams();
 	const [pokemonDetail, setPokemonDetail] = useState({});
+	const { isLoading } = usePokemon;
 	const colors = useSelector(state => state.colors);
 
 	useEffect(() => {
-		document.title = 'Pokedex';
-		axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`).then(res => {
+		pokemonApi.get(`/pokemon/${id}`).then(res => {
 			setPokemonDetail(res.data);
 		});
 	}, [id]);
@@ -41,7 +43,6 @@ const PokemonDetail = () => {
 	const moves = pokemonDetail.moves?.map(move =>
 		move.move.name.replace(/^\w/, c => c.toUpperCase())
 	);
-	console.log(moves);
 
 	return (
 		<Fragment>
@@ -51,7 +52,7 @@ const PokemonDetail = () => {
 				<img className="pokeball" src={pokeball} alt="Open Pokeball" />
 				<img
 					className="pokemon"
-					src={pokemonDetail.sprites?.other.dream_world.front_default}
+					src={pokemonDetail.sprites?.other.home.front_default}
 					alt={`Imagen de ${pokemonDetail.name}`}
 				/>
 
@@ -62,6 +63,7 @@ const PokemonDetail = () => {
 						</Link>
 					</div>
 					<div className="detail-grid__2 mb-40">
+						{isLoading && <Loading />}
 						<h4 className="d-inline-block border rounded p-2 text-dark mt-3 mb-25">
 							#{pokemonDetail.id}
 						</h4>
@@ -131,7 +133,54 @@ const PokemonDetail = () => {
 							<h2 className="detail-moves">Estadísticas</h2>
 							<img className="d-inline" src={clip} alt="Clip" />
 						</div>
-						<p className="detail-move">Estadísticas</p>
+						<div className="progress mb-3">
+							<div
+								className="progress-bar progress-bar-striped bg-success"
+								role="progressbar"
+								aria-valuenow={Number(pokemonDetail.stats?.[0].base_stat)}
+								aria-valuemin="0"
+								aria-valuemax="100"
+								style={{ width: `${pokemonDetail.stats?.[0].base_stat}%` }}
+							>
+								HP: {` ${pokemonDetail.stats?.[0].base_stat}%`}
+							</div>
+						</div>
+						<div className="progress mb-3">
+							<div
+								className="progress-bar progress-bar-striped bg-info"
+								role="progressbar"
+								aria-valuenow={Number(pokemonDetail.stats?.[1].base_stat)}
+								aria-valuemin="0"
+								aria-valuemax="100"
+								style={{ width: `${pokemonDetail.stats?.[1].base_stat}%` }}
+							>
+								ATAQUE: {` ${pokemonDetail.stats?.[1].base_stat}%`}
+							</div>
+						</div>
+						<div className="progress mb-3">
+							<div
+								className="progress-bar progress-bar-striped bg-warning"
+								role="progressbar"
+								aria-valuenow={Number(pokemonDetail.stats?.[2].base_stat)}
+								aria-valuemin="0"
+								aria-valuemax="100"
+								style={{ width: `${pokemonDetail.stats?.[2].base_stat}%` }}
+							>
+								DEFENSA: {` ${pokemonDetail.stats?.[2].base_stat}%`}
+							</div>
+						</div>
+						<div className="progress mb-3">
+							<div
+								className="progress-bar progress-bar-striped bg-danger"
+								role="progressbar"
+								aria-valuenow={Number(pokemonDetail.stats?.[5].base_stat)}
+								aria-valuemin="0"
+								aria-valuemax="100"
+								style={{ width: `${pokemonDetail.stats?.[5].base_stat}%` }}
+							>
+								VELOCIDAD: {` ${pokemonDetail.stats?.[5].base_stat}%`}
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -145,11 +194,12 @@ const PokemonDetail = () => {
 							<img className="clip" src={clip} alt="Clip" />
 						</div>
 						<p className="detail-move">
-							{moves.map((move, index) => (
-								<span className="border" key={index}>
-									{move}
-								</span>
-							))}
+							{moves &&
+								moves.map((move, index) => (
+									<span className="border" key={index}>
+										{move}
+									</span>
+								))}
 						</p>
 					</div>
 				</div>

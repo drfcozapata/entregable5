@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from 'react';
-import Header from './Header';
+import React, { useState } from 'react';
 import trainers from '../img/trainers.png';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

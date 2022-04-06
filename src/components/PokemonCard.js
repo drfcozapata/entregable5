@@ -38,13 +38,16 @@ const PokemonCard = ({ pokemonUrl }) => {
 				>
 					<img
 						className="header-image"
-						src={pokemon.sprites?.other.dream_world.front_default}
+						src={pokemon.sprites?.other.home.front_default}
 						alt={`Imagen de ${pokemon.name}`}
 					/>
 				</div>
 				<div className="card-body">
 					<h4 className="card-title">{pokemon.name}</h4>
-					<p className="type1">{pokemon.types?.[0].type.name}</p>
+					<p className="type1">
+						{pokemon.types?.[0].type.name}
+						{pokemon.types?.[1] && ` / ${pokemon.types?.[1].type.name}`}
+					</p>
 					<p className="type2 text-dark">Tipo</p>
 					<div>
 						<div className="d-flex justify-content-around">
